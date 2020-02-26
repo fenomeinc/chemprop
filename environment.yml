@@ -6,15 +6,11 @@ channels:
   - conda-forge
 
 dependencies:
-  - gunicorn
   - rdkit
   - pytorch
-  - torchvision
-  - flask
   - hyperopt
   - numpy
   - scikit-learn
   - scipy
-  - tensorflow
   - tensorboardX
   - tqdm
