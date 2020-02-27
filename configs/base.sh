@@ -9,8 +9,11 @@ if [ -z "${__CONFIGS_BASE__}" ]; then
   TRAIN_FEATURES=${DATA_DIR}/chemprop_input_train_fold_chembl.rdkit_2d_features.npz
   VAL_SPLIT=${DATA_DIR}/chemprop_input_validate_fold_chembl.csv
   VAL_FEATURES=${DATA_DIR}/chemprop_input_validate_fold_chembl.rdkit_2d_features.npz
-  TEST_SPLIT=${DATA_DIR}/intermediate_tables/foodb_test_fold_smiles_only.csv
+  TEST_SPLIT=${DATA_DIR}/chemprop_input_test_fold_foodb.csv
+  TEST_FEATURES=${DATA_DIR}/chemprop_input_test_fold_foodb.rdkit_2d_features.npz
   OUTPUT_ROOT=${HOME}/outputs/models/chemprop
   OUTPUT_BASE_DIR=${OUTPUT_ROOT}/$(date +%Y%m%d)
+  PREDICTIONS_ROOT=${HOME}/outputs/predictions/chemprop
+  PREDICTIONS_BASE_DIR=${PREDICTIONS_ROOT}/$(date +%Y%m%d)
 
 fi  # __CONFIGS_BASE__

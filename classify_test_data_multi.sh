@@ -2,14 +2,16 @@
 
 source configs/base.sh
 
-OUTPUT_BASE_DIR=${OUTPUT_ROOT}/20200223
+EXPT_DATE=20200226
+OUTPUT_BASE_DIR=${OUTPUT_ROOT}/${EXPT_DATE}
+PREDICTIONS_BASE_DIR=${PREDICTIONS_ROOT}/${EXPT_DATE}
 
 for iter in a b c d e f; do
-
-  OUTPUT_PATH=${OUTPUT_BASE_DIR}_${iter}/fold_0
-  mkdir -p ${OUTPUT_PATH}
+  PREDICTIONS_PATH=${PREDICTIONS_BASE_DIR}_${iter}/fold_0
+  mkdir -p ${PREDICTIONS_PATH}
   python ./predict.py \
       --test_path=${TEST_SPLIT} \
+      --features_path=${TEST_FEATURES} \
       --checkpoint_path=${OUTPUT_BASE_DIR}_${iter}/fold_0/model_0/model.pt \
-      --preds_path=${OUTPUT_PATH}/foodb_test_fold_predictions.csv
+      --preds_path=${PREDICTIONS_PATH}/foodb_test_fold_predictions.csv
 done
