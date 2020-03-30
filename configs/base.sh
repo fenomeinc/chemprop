@@ -4,7 +4,8 @@
 if [ -z "${__CONFIGS_BASE__}" ]; then
   __CONFIGS_BASE__=true
 
-  DATA_DIR=${HOME}/data/chembl_ic50_foodb_formatted_for_chemprop/20200203
+  # Directories and data files.
+  DATA_DIR=${HOME}/data/chembl_ic50_foodb_formatted_for_chemprop/20200326
   TRAIN_SPLIT=${DATA_DIR}/chemprop_input_train_fold_chembl.csv
   TRAIN_FEATURES=${DATA_DIR}/chemprop_input_train_fold_chembl.rdkit_2d_features.npz
   VAL_SPLIT=${DATA_DIR}/chemprop_input_validate_fold_chembl.csv
@@ -16,4 +17,6 @@ if [ -z "${__CONFIGS_BASE__}" ]; then
   PREDICTIONS_ROOT=${HOME}/outputs/predictions/chemprop
   PREDICTIONS_BASE_DIR=${PREDICTIONS_ROOT}/$(date +%Y%m%d)
 
+  # Hyperparameters.
+  EPOCHS=30
 fi  # __CONFIGS_BASE__
