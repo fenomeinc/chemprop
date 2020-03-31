@@ -18,7 +18,7 @@ for iter in 0 1 2 3 4 5; do
   mkdir -p "${PREDICTIONS_PATH}"
   export OUT_DIR=${OUTPUT_DIR}
   py65::log "Classifying iteration ${iter}"
-  p65::execute python ./predict.py \
+  py65::execute python ./predict.py \
       --test_path="${TEST_SPLIT}" \
       --checkpoint_path="${OUTPUT_BASE_DIR}"/${iter}/fold_0/model_0/model.pt \
       --preds_path="${PREDICTIONS_PATH}"/foodb_test_fold_predictions.csv
