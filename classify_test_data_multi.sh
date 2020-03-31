@@ -16,7 +16,7 @@ py65::log "Predictions written to ${PREDICTIONS_BASE_DIR}"
 for iter in 0 1 2 3 4 5; do
   PREDICTIONS_PATH=${PREDICTIONS_BASE_DIR}/${iter}/fold_0
   mkdir -p "${PREDICTIONS_PATH}"
-  export OUT_DIR=${OUTPUT_DIR}
+  export OUT_DIR="${PREDICTIONS_PATH}"
   py65::log "Classifying iteration ${iter}"
   py65::execute python ./predict.py \
       --test_path="${TEST_SPLIT}" \
