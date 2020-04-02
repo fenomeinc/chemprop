@@ -5,7 +5,7 @@ if [ -z "${__CONFIGS_BASE__}" ]; then
   __CONFIGS_BASE__=true
 
   # Directories and data files.
-  DATA_DATESTAMP=20200326
+  DATA_DATESTAMP=20200401
   DATA_DIR=${HOME}/data/chembl_ic50_foodb_formatted_for_chemprop/${DATA_DATESTAMP}
   TRAIN_SPLIT=${DATA_DIR}/chemprop_input_train_fold_chembl.csv
   TRAIN_FEATURES=${DATA_DIR}/chemprop_input_train_fold_chembl.rdkit_2d_features.npz
@@ -13,6 +13,8 @@ if [ -z "${__CONFIGS_BASE__}" ]; then
   VAL_FEATURES=${DATA_DIR}/chemprop_input_validate_fold_chembl.rdkit_2d_features.npz
   TEST_SPLIT=${DATA_DIR}/chemprop_input_test_fold_foodb.csv
   TEST_FEATURES=${DATA_DIR}/chemprop_input_test_fold_foodb.rdkit_2d_features.npz
+  # Combination of train and validate.
+  UNIFIED_SPLIT=${DATA_DIR}/chemprop_input_unified_fold_chembl.csv
   OUTPUT_ROOT=${HOME}/outputs/models/chemprop
   OUTPUT_BASE_DIR=${OUTPUT_ROOT}/$(date +%Y%m%d)
   PREDICTIONS_ROOT=${HOME}/outputs/predictions/chemprop
