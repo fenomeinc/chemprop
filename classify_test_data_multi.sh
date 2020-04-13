@@ -8,7 +8,7 @@ Usage:
 EOF
 }
 
-while getopts "hc:" opt; do
+while getopts "hc:d:" opt; do
     case ${opt} in
         c)
             CONFIG_FILE=${OPTARG}
@@ -26,8 +26,11 @@ while getopts "hc:" opt; do
             ;;
     esac
 done
+if [ -z "${CONFIG_FILE}" ]; then
+  echo "-c config_file.sh argument is required."
+  exit 1
+fi
 source "${CONFIG_FILE}"
-
 if [ -z "${MODEL_DATE}" ]; then
   echo "-d YYYY-MM-DD experiment date argument is required."
 fi

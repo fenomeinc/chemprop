@@ -27,6 +27,10 @@ while getopts "hc:" opt; do
             ;;
     esac
 done
+if [ -z "${CONFIG_FILE}" ]; then
+  echo "-c config_file.sh argument is required."
+  exit 1
+fi
 source "${CONFIG_FILE}"
 
 mkdir -p "${OUTPUT_BASE_DIR}"

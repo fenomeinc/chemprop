@@ -1,8 +1,8 @@
 #!/bin/false
 # Do not execute.  Only load via source.
 
-if [ -z "${__CONFIGS_BASE__}" ]; then
-  __CONFIGS_BASE__=true
+if [ -z "${__CONFIGS_TOX21__}" ]; then
+  __CONFIGS_TOX21__=true
 
   # Directories and data files.
   DATA_DATESTAMP=20200325
@@ -18,4 +18,4 @@ if [ -z "${__CONFIGS_BASE__}" ]; then
 
   # Hyperparameters.
   EPOCHS=30
-fi  # __CONFIGS_BASE__
+fi  # __CONFIGS_TOX21__
