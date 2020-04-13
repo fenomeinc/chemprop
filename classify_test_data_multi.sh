@@ -32,7 +32,7 @@ if [ -z "${CONFIG_FILE}" ]; then
 fi
 source "${CONFIG_FILE}"
 if [ -z "${MODEL_DATE}" ]; then
-  echo "-d YYYY-MM-DD experiment date argument is required."
+  echo "-d YYYYMMDD experiment date argument is required."
 fi
 
 OUTPUT_BASE_DIR=${OUTPUT_ROOT}/${MODEL_DATE}
