@@ -3,13 +3,36 @@
 # Like run_multi_base_models.sh, but doesn't use a holdout validate set -- just tries to
 # optimize on the complete data.
 
-source configs/config_gordon_proteases_unified_data.sh
 source ${HOME}/work/fl65/py65/utils/sh_utils.sh
-LOGFILE=${OUTPUT_BASE_DIR}/runner_rig.log
 
-py65::assert_exists "${UNIFIED_SPLIT}"
+usage () {
+  cat <<EOF
+Usage:
+  run_multi_base_models_unified_data.sh -c /path/to/config.sh
+EOF
+}
+
+while getopts "hc:" opt; do
+    case ${opt} in
+        c)
+            CONFIG_FILE=${OPTARG}
+            ;;
+        \?)
+            usage
+            exit 1
+            ;;
+        h)
+            usage
+            exit 0
+            ;;
+    esac
+done
+source "${CONFIG_FILE}"
 
 mkdir -p "${OUTPUT_BASE_DIR}"
+LOGFILE=${OUTPUT_BASE_DIR}/runner_rig.log
+savelog -t -c 10 "${LOGFILE}"
+py65::assert_exists "${UNIFIED_SPLIT}"
 echo "${EXPT_DESCR}" > "${OUTPUT_BASE_DIR}/experiment_description.txt"
 
 for iter in 0 1 2 3 4 5; do
