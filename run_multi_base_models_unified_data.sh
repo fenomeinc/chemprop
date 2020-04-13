@@ -49,7 +49,7 @@ for iter in 0 1 2 3 4 5; do
 done
 py65::log "Done with all training.  Starting classification."
 
-./classify_test_data_multi.sh
+./classify_test_data_multi.sh -c "${CONFIG_FILE}" -d "${EXPT_DATE}"
 
 py65::log  "Done with all classification.  Shutting down machine."
 sudo shutdown -h now

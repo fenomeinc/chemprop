@@ -1,11 +1,39 @@
 #!/bin/bash
 
-source configs/config_gordon_proteases_unified_data.sh
 source ${HOME}/work/fl65/py65/utils/sh_utils.sh
+usage () {
+  cat <<EOF
+Usage:
+  classify_test_data_multi.sh -c /path/to/config.sh
+EOF
+}
 
-EXPT_DATE=20200402
-OUTPUT_BASE_DIR=${OUTPUT_ROOT}/${EXPT_DATE}
-PREDICTIONS_BASE_DIR=${PREDICTIONS_ROOT}/${EXPT_DATE}
+while getopts "hc:" opt; do
+    case ${opt} in
+        c)
+            CONFIG_FILE=${OPTARG}
+            ;;
+        d)
+            MODEL_DATE=${OPTARG}
+            ;;
+        \?)
+            usage
+            exit 1
+            ;;
+        h)
+            usage
+            exit 0
+            ;;
+    esac
+done
+source "${CONFIG_FILE}"
+
+if [ -z "${MODEL_DATE}" ]; then
+  echo "-d YYYY-MM-DD experiment date argument is required."
+fi
+
+OUTPUT_BASE_DIR=${OUTPUT_ROOT}/${MODEL_DATE}
+PREDICTIONS_BASE_DIR=${PREDICTIONS_ROOT}/${MODEL_DATE}
 LOGFILE=${OUTPUT_BASE_DIR}/runner_rig.log
 
 mkdir -p "${PREDICTIONS_BASE_DIR}"
