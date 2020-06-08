@@ -15,7 +15,7 @@ rm "${PREDICTIONS_PATH}"/chemprop_foodb_training_predictions_${iter}.csv
 #       --test_path="${TEST_SPLIT}" \
 #       --checkpoint_path="${OUTPUT_BASE_DIR}"/${iter}/fold_0/model_0/model.pt \
 #       --preds_path="${PREDICTIONS_PATH}"/chemprop_foodb_training_predictions_${iter}.csv
-python ~/NES/covid-data-and-model-diagnostics/chemprop_input_splitter.py \
+python chemprop_input_splitter.py \
         --chemprop_model_path="${OUTPUT_BASE_DIR}"/${iter}/fold_0/model_0/model.pt \
         --input_file "${TEST_SPLIT}" \
         --output_file="${PREDICTIONS_PATH}"/chemprop_quercetin_predictions_${iter}.csv \
