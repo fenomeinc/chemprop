@@ -23,5 +23,5 @@ if [ -z "${__CONFIGS_BASE__}" ]; then
   # Hyperparameters.
   # Note: Chemprop doesn't natively support early stopping.  :-/
   EPOCHS=50
-  BATCH_SIZE=200
+  BATCH_SIZE=50
 fi  # __CONFIGS_BASE__
