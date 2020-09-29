@@ -19,6 +19,7 @@ for class in EC50_bin IC50_bin; do
       --save_dir=${OUTPUT_DIR} \
       --separate_test_path=${val_split} \
       --batch_size=${BATCH_SIZE} \
+      --seed=${RANDOM} \
       --split_sizes 0.9 0.1 0.0
   done
 done
