@@ -5,7 +5,7 @@ source ${HOME}/work/fl65/py65/utils/sh_utils.sh
 LOGFILE=${OUTPUT_BASE_DIR}/runner_rig.log
 
 for class in EC50_bin IC50_bin; do
-  for split in 0 1 2 3 4; do
+  for split in 4 5 6; do
     OUTPUT_DIR="${OUTPUT_BASE_DIR}/${class}/split=${split}"
     mkdir -p ${OUTPUT_DIR}
     export OUT_DIR=${OUTPUT_DIR}
@@ -17,12 +17,12 @@ for class in EC50_bin IC50_bin; do
       --data_path=${train_split} \
       --dataset_type=classification \
       --save_dir=${OUTPUT_DIR} \
-      --separate_val_path=${val_split} \
+      --separate_test_path=${val_split} \
       --batch_size=${BATCH_SIZE} \
-      --split_sizes 1.0 0.0 0.0
+      --split_sizes 0.9 0.1 0.0
   done
 done
 py65::log "Done with all training."
 
 py65::log  "Done with all classification.  Shutting down machine."
-#sudo shutdown -h now
+sudo shutdown -h now
