@@ -12,6 +12,8 @@ if [ -z "${__CONFIGS_TOX21_SPLIT__}" ]; then
   # Directories and data files.
   DATA_DATESTAMP=20200924
   DATA_DIR=${HOME}/data/tox21/20200604_tox21_complete_dataset/uniform_joined_and_split/20200924_reformatted_for_chemprop/pivoted
+  # Data subset: Either `full` or `tox21`.
+  DATA_SUBSET=full
   # The following two variables need to be substituted with /usr/bin/printf before use.
   # They take two subsitutions: the data class (EC50_bin or IC50_bin) and the split
   # index (0-9 inclusive).
@@ -19,7 +21,7 @@ if [ -z "${__CONFIGS_TOX21_SPLIT__}" ]; then
   VAL_SPLIT_PATTERN="${DATA_DIR}/%s/test_split=%d.pivoted.csv"
   TEST_SPLIT="${DATA_DIR}/2020-09-30_foodb_compounds_notox21_smiles_only.csv"
   OUTPUT_ROOT=${HOME}/outputs/models/chemprop_on_joined_tox21
-  OUTPUT_BASE_DIR=${OUTPUT_ROOT}/${MODEL_DATE:-$(date +%Y%m%d)}
+  OUTPUT_BASE_DIR=${OUTPUT_ROOT}/${DATA_SUBSET}/chemprop/${MODEL_DATE:-$(date +%Y%m%d)}
   PREDICTIONS_ROOT=${HOME}/outputs/predictions/chemprop_on_joined_tox21
   PREDICTIONS_BASE_DIR=${PREDICTIONS_ROOT}/${MODEL_DATE:-$(date +%Y%m%d)}
 

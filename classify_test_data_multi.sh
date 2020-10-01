@@ -49,19 +49,23 @@ py65::log "Predictions written to ${PREDICTIONS_BASE_DIR}"
 
 echo "${EXPT_DESCR}" > "${PREDICTIONS_BASE_DIR}/experiment_description.txt"
 
+# Target output template is
+#   s3://py65/predictions/2020-09_cpi_prediction_sets/[DATA SUBSET]/[MY MODEL]/[MODEL RUN NAME]/split_i/[AGONIST/ANTAGONIST]/[TEST SET / FOODB].csv
+# full/chemprop/20200929/split_9/antagonist/test_set.csv
 for iter in 0 1 2 3 4 5 6 7 8 9; do
   # TODO(tlane): Generalize to EC2 when we have predictions for it.
   CLASS=IC50_bin
-  PREDICTIONS_PATH=${PREDICTIONS_BASE_DIR}/${CLASS}/split=${iter}
+  CLASS_NAME=antagonist
+  PREDICTIONS_PATH=${PREDICTIONS_BASE_DIR}/split_${iter}/${CLASS_NAME}
   mkdir -p "${PREDICTIONS_PATH}"
   export OUT_DIR="${PREDICTIONS_PATH}"
   py65::log "Classifying iteration ${iter}"
   py65::execute python ./predict.py \
       --test_path="${TEST_SPLIT}" \
       --checkpoint_path="${OUTPUT_BASE_DIR}"/${CLASS}/split=${iter}/fold_0/model_0/model.pt \
-      --preds_path="${PREDICTIONS_PATH}"/foodb_test_fold_predictions.csv
+      --preds_path="${PREDICTIONS_PATH}"/foodb.csv
   py65::execute python ./predict.py \
       --test_path=$(printf ${VAL_SPLIT_PATTERN} ${CLASS} ${iter}) \
       --checkpoint_path="${OUTPUT_BASE_DIR}"/${CLASS}/split=${iter}/fold_0/model_0/model.pt \
-      --preds_path="${PREDICTIONS_PATH}"/tox21_test_predictions.csv
+      --preds_path="${PREDICTIONS_PATH}"/test_set.csv
 done
