@@ -15,13 +15,14 @@ if [ -z "${__CONFIGS_BASE__}" ]; then
   # index (0-9 inclusive).
   TRAIN_SPLIT_PATTERN="${DATA_DIR}/%s/train_split=%d.pivoted.csv"
   VAL_SPLIT_PATTERN="${DATA_DIR}/%s/test_split=%d.pivoted.csv"
+  TEST_SPLIT="${DATA_DIR}/2020-09-30_foodb_compounds_notox21_smiles_only.csv"
   OUTPUT_ROOT=${HOME}/outputs/models/chemprop_on_joined_tox21
-  OUTPUT_BASE_DIR=${OUTPUT_ROOT}/$(date +%Y%m%d)
+  OUTPUT_BASE_DIR=${OUTPUT_ROOT}/${MODEL_DATE:-$(date +%Y%m%d)}
   PREDICTIONS_ROOT=${HOME}/outputs/predictions/chemprop_on_joined_tox21
-  PREDICTIONS_BASE_DIR=${PREDICTIONS_ROOT}/$(date +%Y%m%d)
+  PREDICTIONS_BASE_DIR=${PREDICTIONS_ROOT}/${MODEL_DATE:-$(date +%Y%m%d)}
 
   # Hyperparameters.
   # Note: Chemprop doesn't natively support early stopping.  :-/
-  EPOCHS=50
+  EPOCHS=35
   BATCH_SIZE=50
 fi  # __CONFIGS_BASE__
