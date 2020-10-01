@@ -4,8 +4,10 @@
 # Config for running pre-split data, where the base data is Tox21 joined and cleaned with
 # ChEMBL and PDBbind.
 
-if [ -z "${__CONFIGS_BASE__}" ]; then
-  __CONFIGS_BASE__=true
+if [ -z "${__CONFIGS_TOX21_SPLIT__}" ]; then
+  __CONFIGS_TOX21_SPLIT__=true
+
+  EXPT_DESCR="Chemprop with base hyperparams run on full Tox21+ChEMBL train data."
 
   # Directories and data files.
   DATA_DATESTAMP=20200924
@@ -24,4 +26,4 @@ if [ -z "${__CONFIGS_BASE__}" ]; then
   # Note: Chemprop doesn't natively support early stopping.  :-/
   EPOCHS=50
   BATCH_SIZE=50
-fi  # __CONFIGS_BASE__
+fi  # __CONFIGS_TOX21_SPLIT__
