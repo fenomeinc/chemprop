@@ -4,7 +4,7 @@ source ${HOME}/work/fl65/py65/utils/sh_utils.sh
 usage () {
   cat <<EOF
 Usage:
-  classify_test_data_multi.sh -c /path/to/config.sh
+  classify_test_data_multi.sh -c /path/to/config.sh -d model_run_date
 EOF
 }
 
@@ -49,13 +49,19 @@ py65::log "Predictions written to ${PREDICTIONS_BASE_DIR}"
 
 echo "${EXPT_DESCR}" > "${PREDICTIONS_BASE_DIR}/experiment_description.txt"
 
-for iter in 0 1 2 3 4 5; do
-  PREDICTIONS_PATH=${PREDICTIONS_BASE_DIR}/${iter}/fold_0
+for iter in 0 1 2 3 4 5 6 7 8 9; do
+  # TODO(tlane): Generalize to EC2 when we have predictions for it.
+  CLASS=IC50_bin
+  PREDICTIONS_PATH=${PREDICTIONS_BASE_DIR}/${CLASS}/split=${iter}
   mkdir -p "${PREDICTIONS_PATH}"
   export OUT_DIR="${PREDICTIONS_PATH}"
   py65::log "Classifying iteration ${iter}"
   py65::execute python ./predict.py \
       --test_path="${TEST_SPLIT}" \
-      --checkpoint_path="${OUTPUT_BASE_DIR}"/${iter}/fold_0/model_0/model.pt \
+      --checkpoint_path="${OUTPUT_BASE_DIR}"/${CLASS}/split=${iter}/fold_0/model_0/model.pt \
       --preds_path="${PREDICTIONS_PATH}"/foodb_test_fold_predictions.csv
+  py65::execute python ./predict.py \
+      --test_path=$(printf ${VAL_SPLIT_PATTERN} ${CLASS} ${iter}) \
+      --checkpoint_path="${OUTPUT_BASE_DIR}"/${CLASS}/split=${iter}/fold_0/model_0/model.pt \
+      --preds_path="${PREDICTIONS_PATH}"/tox21_test_predictions.csv
 done
