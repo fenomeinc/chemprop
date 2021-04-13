@@ -1,19 +1,23 @@
-from argparse import ArgumentParser
 import os
 import pickle
 from pprint import pprint
 import sys
+from typing_extensions import Literal
 
 import numpy as np
+from tap import Tap  # pip install typed-argument-parser (https://github.com/swansonk14/typed-argument-parser)
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from chemprop.data import MoleculeDataset
-from chemprop.data.utils import get_data
+from chemprop.data import get_data, MoleculeDataset
 
 
 BASE = '/data/rsg/chemistry/yangk/lsc_experiments_dump_splits/data'
 DATASETS = ['pcba', 'muv', 'hiv', 'bace', 'bbbp', 'tox21', 'toxcast', 'sider', 'clintox', 'chembl']
+
+
+class Args(Tap):
+    split_type: Literal['random', 'scaffold']  # Split type
 
 
 def compute_ratios(data: MoleculeDataset) -> np.ndarray:
@@ -82,9 +86,6 @@ def examine_split_balance(split_type: str):
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser()
-    parser.add_argument('--split_type', type=str, required=True, choices=['random', 'scaffold'],
-                        help='Split type')
-    args = parser.parse_args()
+    args = Args().parse_args()
 
     examine_split_balance(args.split_type)

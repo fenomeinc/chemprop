@@ -1,38 +1,38 @@
-from argparse import ArgumentParser
 from collections import OrderedDict, namedtuple
 import os
 from typing import List, Optional, Tuple
+from typing_extensions import Literal
 
 import numpy as np
 from scipy.stats import wilcoxon
 from tqdm import tqdm
+from tap import Tap  # pip install typed-argument-parser (https://github.com/swansonk14/typed-argument-parser)
 
-from chemprop.train.evaluate import evaluate_predictions
-from chemprop.utils import mean_absolute_error, rmse, roc_auc_score, prc_auc
+from chemprop.train import evaluate_predictions
 
 
 FAKE_LOGGER = namedtuple('FakeLogger', ['info'])(info=lambda x: None)
 
 DATASETS = OrderedDict()
-DATASETS['qm7'] = {'metric': mean_absolute_error, 'type': 'regression'}
-DATASETS['qm8'] = {'metric': mean_absolute_error, 'type': 'regression'}
-DATASETS['qm9'] = {'metric': mean_absolute_error, 'type': 'regression'}
-DATASETS['delaney'] = {'metric': rmse, 'type': 'regression'}
-DATASETS['freesolv'] = {'metric': rmse, 'type': 'regression'}
-DATASETS['lipo'] = {'metric': rmse, 'type': 'regression'}
-DATASETS['pdbbind_full'] = {'metric': rmse, 'type': 'regression'}
-DATASETS['pdbbind_core'] = {'metric': rmse, 'type': 'regression'}
-DATASETS['pdbbind_refined'] = {'metric': rmse, 'type': 'regression'}
-DATASETS['pcba'] = {'metric': prc_auc, 'type': 'classification'}
-DATASETS['muv'] = {'metric': prc_auc, 'type': 'classification'}
-DATASETS['hiv'] = {'metric': roc_auc_score, 'type': 'classification'}
-DATASETS['bace'] = {'metric': roc_auc_score, 'type': 'classification'}
-DATASETS['bbbp'] = {'metric': roc_auc_score, 'type': 'classification'}
-DATASETS['tox21'] = {'metric': roc_auc_score, 'type': 'classification'}
-DATASETS['toxcast'] = {'metric': roc_auc_score, 'type': 'classification'}
-DATASETS['sider'] = {'metric': roc_auc_score, 'type': 'classification'}
-DATASETS['clintox'] = {'metric': roc_auc_score, 'type': 'classification'}
-DATASETS['chembl'] = {'metric': roc_auc_score, 'type': 'classification'}
+DATASETS['qm7'] = {'metric': 'mae', 'type': 'regression'}
+DATASETS['qm8'] = {'metric': 'mae', 'type': 'regression'}
+DATASETS['qm9'] = {'metric': 'mae', 'type': 'regression'}
+DATASETS['delaney'] = {'metric': 'rmse', 'type': 'regression'}
+DATASETS['freesolv'] = {'metric': 'rmse', 'type': 'regression'}
+DATASETS['lipo'] = {'metric': 'rmse', 'type': 'regression'}
+DATASETS['pdbbind_full'] = {'metric': 'rmse', 'type': 'regression'}
+DATASETS['pdbbind_core'] = {'metric': 'rmse', 'type': 'regression'}
+DATASETS['pdbbind_refined'] = {'metric': 'rmse', 'type': 'regression'}
+DATASETS['pcba'] = {'metric': 'prc-auc', 'type': 'classification'}
+DATASETS['muv'] = {'metric': 'prc-auc', 'type': 'classification'}
+DATASETS['hiv'] = {'metric': 'auc', 'type': 'classification'}
+DATASETS['bace'] = {'metric': 'auc', 'type': 'classification'}
+DATASETS['bbbp'] = {'metric': 'auc', 'type': 'classification'}
+DATASETS['tox21'] = {'metric': 'auc', 'type': 'classification'}
+DATASETS['toxcast'] = {'metric': 'auc', 'type': 'classification'}
+DATASETS['sider'] = {'metric': 'auc', 'type': 'classification'}
+DATASETS['clintox'] = {'metric': 'auc', 'type': 'classification'}
+DATASETS['chembl'] = {'metric': 'auc', 'type': 'classification'}
 
 # test if 1 is better than 2 (less error, higher auc)
 COMPARISONS = [
@@ -51,6 +51,11 @@ COMPARISONS = [
 ]
 
 EXPERIMENTS = sorted({exp for comp in COMPARISONS for exp in comp})
+
+
+class Args(Tap):
+    preds_dir: str  # Path to a directory containing predictions
+    split_type: Literal['random', 'scaffold']  # Split type
 
 
 def load_preds_and_targets(preds_dir: str,
@@ -96,7 +101,7 @@ def compute_values(dataset: str,
             preds=pred,
             targets=target,
             num_tasks=num_tasks,
-            metric_func=DATASETS[dataset]['metric'],
+            metrics=[DATASETS[dataset]['metric']],
             dataset_type=DATASETS[dataset]['type'],
             logger=FAKE_LOGGER
         )
@@ -158,12 +163,7 @@ def wilcoxon_significance(preds_dir: str, split_type: str):
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser()
-    parser.add_argument('--preds_dir', type=str, required=True,
-                        help='Path to a directory containing predictions')
-    parser.add_argument('--split_type', type=str, required=True, choices=['random', 'scaffold'],
-                        help='Split type')
-    args = parser.parse_args()
+    args = Args().parse_args()
 
     wilcoxon_significance(
         preds_dir=args.preds_dir,
